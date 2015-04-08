@@ -28,6 +28,7 @@ function [img_dat, hdr] = AOI_read_vdaq(blkfile, odt)
 % wolf zinke, wolfzinke@gmail.com 
 %
 % wolf zinke, 06.04.2015
+%
 
 % ____________________________________________________________________________ %
 %% check input data, get file name is required
@@ -42,7 +43,7 @@ end
 
 % ____________________________________________________________________________ %
 %% Read in the header information
-fid = fopen(blkfile,'r');
+fid = fopen(blkfile, 'r');
 
 % DATA INTEGRITY 		
 hdr.FileSize		  = fread(fid,1,'long');

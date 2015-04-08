@@ -67,9 +67,6 @@ end
 % ____________________________________________________________________________ %
 %% prepare the image header information
 
-% pre-allocate data with the correct matrix dimensions
-nii_img = nan([hdr.Width, hdr.Height, 1, hdr.NFrames]); % use this trick to define a z-dimentsion of 1 since it is 2D data
-
 % get pixel size
 if(~isempty(FOV))
     if(hdr.Width ~= hdr.Height)
@@ -121,6 +118,10 @@ end
 
 % ____________________________________________________________________________ %
 %% loop over all available conditions and save these in seperate files
+
+% pre-allocate data with the correct matrix dimensions
+nii_img = nan([hdr.Width, hdr.Height, 1, hdr.NFrames]); % use this trick to define a z-dimentsion of 1 since it is 2D data
+
 for(c = 1:hdr.NConds)
     
     if(hdr.NConds>1)
