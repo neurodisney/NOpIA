@@ -1,34 +1,34 @@
 function AOI_blk2nii(blkfile, niifile, frame_rate, FOV, odt)
 % Convert a *.BLK file into a *.nii file.
-%  
-% DESCRIPTION 
+%
+% DESCRIPTION
 %    This function reads in a *.BLK file that was acquired with the Vdaq software
-%    from Optical Imaging Ltd (http://www.opt-imaging.net/) and saves it in the 
+%    from Optical Imaging Ltd (http://www.opt-imaging.net/) and saves it in the
 %    nifti format (http://nifti.nimh.nih.gov/).
 %
-%   Be aware, that 
-% 
+%   Be aware, that
+%
 %    Based on the function frame2nii by wolf zinke (2008).
 %
-% SYNTAX 
+% SYNTAX
 %   AOI_blk2nii(blkfile, niifile, frame_rate, FOV, odt)
 %
 %   Input:
-%         <blkfile>     Filename for a *.blk file 
+%         <blkfile>     Filename for a *.blk file
 %
 %         <niifile>     Filename for the nifit output file
 %
-%         <frame_rate>  frame rate in seconds 
+%         <frame_rate>  frame rate in seconds
 %
 %         <FOV>         Field of view in mm (currently only squared FoV supported)
 %
 %         <odt>         Data type of output image data
 %
 %
-% REFERENCES 
+% REFERENCES
 %
-% ......................................................................... 
-% wolf zinke, wolfzinke@gmail.com 
+% .........................................................................
+% wolf zinke, wolfzinke@gmail.com
 %
 % wolf zinke, 07.04.2015
 
@@ -43,9 +43,9 @@ end
 if(~exist('niifile','var') || isempty(niifile))
     [PathName,FileName] = fileparts(blkfile);
     niifile = fullfile(PathName,FileName);
-else
-    [PathName,FileName] = fileparts(niifile);
-    niifile = fullfile(PathName,FileName);
+%  else
+%      [PathName,FileName] = fileparts(niifile);
+%      niifile = fullfile(PathName,FileName);
 end
 
 if(~exist('frame_rate','var') || isempty(frame_rate))
@@ -87,55 +87,55 @@ vxlsz = repmat(pxlsz,1,3);
 switch hdr.dt
     case 'uint8'
         dt = 2;
-        
+
     case 'int16'
         dt = 4;
-      
+
     case 'int32'
         dt = 8;
-       
+
     case 'float32'
         dt = 16;
-              
+
     case 'float64'
         dt = 64;
-        
+
     case 'RGB24'
         dt = 128;
-        
+
     case 'int8'
         dt = 256;
-        
+
     case 'RGB96'
         dt = 511;
-        
+
     case 'uint16'
         dt = 512;
-     
+
     case 'uint32'
-        dt = 768;       
+        dt = 768;
 end
 
 % ____________________________________________________________________________ %
-%% loop over all available conditions and save these in seperate files
+%% loop over all available conditions and save these in separate files
 
 % pre-allocate data with the correct matrix dimensions
-nii_img = nan([hdr.Width, hdr.Height, 1, hdr.NFrames]); % use this trick to define a z-dimentsion of 1 since it is 2D data
+nii_img = nan([hdr.Width, hdr.Height, 1, hdr.NFrames]); % use this trick to define a z-dimension of 1 since it is 2D data
 
 for(c = 1:hdr.NConds)
-    
+
     if(hdr.NConds>1)
         cfl = [niifile,'_cnd',sprintf('%02d',c),'.nii'];
     else
         cfl = [niifile,'.nii'];
     end
-    
+
     % prepare nifti data
     nii_img(:,:,1,:) = img_dat(:,:,:,c);
     nii = make_nii(nii_img, vxlsz, [], dt, 'optical imaging frame data');
-    
+
     % adapt header information
-    nii.hdr.pixdim(5) = frame_rate;  
+    nii.hdr.pixdim(5) = frame_rate;
 
     % save the file
     save_nii(nii, cfl);

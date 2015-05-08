@@ -14,6 +14,7 @@ cat << EOF
     OPTIONS:
             -onm    output file name
             -fov    field of view of image
+            -fr     frame rate (NIY!)
             -dt     data type for output
 
         ##################################################
@@ -40,7 +41,8 @@ fi
 
 dt=""
 fov=""
-onm=$(echo "$blkpfl" | cut -d. -f1)
+fr=1
+onm=$(echo "$blkpfl" | cut -d. -f1) # this might be a source for bugs, it assumes only one dot in the file name (including path)
 
 while [ $# -gt 0 ] ;
 do
@@ -49,6 +51,9 @@ do
                 shift 2
                 ;;
         -fov)   fov=", $2"
+                shift 2
+                ;;
+         -fr)   fr=$2
                 shift 2
                 ;;
          -dt)   dt=", $2"
@@ -70,9 +75,14 @@ srcpath=$(dirname $toolpath)
 niipath=$(ls -d $srcpath/NIfTI*)
 
 
-# echo "addpath('$niipath');addpath('$toolpath'); AOI_bmp2nii('$bmpfl' $onm $fov $dt); exit;" | octave --silent --no-window-system -f -H
+# echo "addpath('$niipath');addpath('$toolpath'); AOI_blk2nii('$blkfl', '$onm' $fov $dt); exit;"
 
 errmsg=$(echo "addpath('$niipath');addpath('$toolpath'); AOI_blk2nii('$blkfl', '$onm' $fov $dt); exit;" | matlab -nojvm -nodisplay -nosplash -nodesktop)
 
-# fslchfiletype NIFTI_GZ $onm
+# for cfl in $(ls ${onm}*.nii)
+# do
+#     fslchfiletype NIFTI_GZ $cfl
+# done
+
+# change TR to match frame rate
 

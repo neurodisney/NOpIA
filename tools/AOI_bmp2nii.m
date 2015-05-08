@@ -1,15 +1,15 @@
 function AOI_bmp2nii(bmpfile, niifile, FOV, odt)
 % Convert a bitmap file into a *.nii file.
-%  
-% DESCRIPTION 
 %
-% SYNTAX 
+% DESCRIPTION
+%
+% SYNTAX
 %
 %
-% REFERENCES 
+% REFERENCES
 %
-% ......................................................................... 
-% wolf zinke, wolfzinke@gmail.com 
+% .........................................................................
+% wolf zinke, wolfzinke@gmail.com
 %
 % wolf zinke, 07.04.2015
 
@@ -24,9 +24,9 @@ end
 if(~exist('niifile','var') || isempty(niifile))
     [PathName,FileName] = fileparts(bmpfile);
     niifile = fullfile(PathName,[FileName,'.nii']);
-else
-    [PathName,FileName] = fileparts(niifile);
-    niifile = fullfile(PathName,[FileName,'.nii']);
+%  else
+%      [PathName,FileName] = fileparts(niifile);
+%      niifile = fullfile(PathName,[FileName,'.nii']);
 end
 
 if(~exist('FOV','var'))
@@ -62,7 +62,7 @@ vxlsz = repmat(pxlsz,1,3);
 nii = make_nii(nii_img, vxlsz, [], [], 'optical imaging bitmap data');
 
 % adapt header information
-nii.hdr.pixdim(5) = 1;  
+nii.hdr.pixdim(5) = 1;
 
 % save the file
 save_nii(nii, niifile);
