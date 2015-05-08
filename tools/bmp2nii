@@ -44,13 +44,13 @@ onm=$(echo "$bmpfl" | cut -d. -f1)
 while [ $# -gt 0 ] ;
 do
     case $1 in
-        -onm)   onm="$1"
+        -onm)   onm="$2"
                 shift 2
                 ;;
-        -fov)   fov=", $1"
+        -fov)   fov=", $2"
                 shift 2
                 ;;
-         -dt)   dt=", $1"
+         -dt)   dt=", $2"
                 shift 2
                 ;;
           -*)   echo "Wrong option: <$1>"
@@ -71,8 +71,8 @@ niipath=$(ls -d $srcpath/NIfTI*)
 
 # echo "addpath('$niipath');addpath('$toolpath'); AOI_bmp2nii('$bmpfl' $onm $fov $dt); exit;" | octave --silent --no-window-system -f -H
 
-errmsg=$(echo "addpath('$niipath');addpath('$toolpath'); AOI_bmp2nii('$bmpfl', '$onm' $fov $dt); exit;" | matlab -nojvm -nodisplay -nosplash)
+errmsg=$(echo "addpath('$niipath');addpath('$toolpath'); AOI_bmp2nii('$bmpfl', '$onm' $fov $dt); exit;" | matlab -nojvm -nodisplay -nosplash -nodesktop)
 
-fslchfiletype NIFTI_GZ $onm
+# fslchfiletype NIFTI_GZ $onm
 
 
