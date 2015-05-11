@@ -42,19 +42,19 @@ Now loop over the file list and convert the data.
 for cfl in $BLKlst
 do
 	onm=$(basename $cfl | sed -e 's/.BLK//g') 
-	blk2nii $cfl $niidir/$onm  # note that FOV and frame rate could be specified
+	blk2nii $cfl -onm $niidir/$onm  # note that FOV and frame rate could be specified
 done
 
 for cfl in $BMPlst
 do
 	onm=$(basename $cfl | sed -e 's/.bmp//g') 
-	bmp2nii $cfl $niidir/$onm .nii # note that FOV could be specified
+	bmp2nii $cfl -onm $niidir/$onm .nii # note that FOV could be specified
 done
 ```
 
 After these steps a set of converted files should be found in the output directory that are in the `*nii.gz` format.
 
-The steps described here are combined in the script `AOI_conv`.  This provides a shortcut to all the conversion steps by just using"
+The steps described here are combined in the script `AOI_conv`.  This provides a shortcut to all the conversion steps by just using:
 
 ```{bash}
 AOI_conv $srcdir $niidir

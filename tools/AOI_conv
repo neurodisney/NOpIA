@@ -70,11 +70,8 @@ echo "output directory: $odir"
 
 mkdir -p $odir  # make sure this directory exists
 
-BLKlst=$(ls $srcdir/*.BLK)
-BMPlst=$(ls $srcdir/*.bmp)
-
-
-for cfl in $BLKlst
+# convert all *.blk files
+for cfl in $(ls $srcdir/*.BLK)
 do
     onm=$(basename $cfl | sed -e 's/.BLK//g')
 
@@ -83,7 +80,8 @@ do
     blk2nii $cfl -onm $odir/$onm  # note that FOV and frame rate could be specified
 done
 
-for cfl in $BMPlst
+# convert all *.bmp files
+for cfl in $(ls $srcdir/*.bmp)
 do
     onm=$(basename $cfl | sed -e 's/.bmp//g')
 
@@ -91,3 +89,19 @@ do
 
     bmp2nii $cfl -onm $odir/$onm.nii # note that FOV could be specified
 done
+
+# zip the output to save space
+for cfl in $(ls $odir/*.nii)
+do
+    if hash pigz 2>/dev/null # this will help as well to get things done faster
+    then
+        pigz --best $cfl
+    else
+#         fslchfiletype NIFTI_GZ $cfl
+        gzip --best -q $cfl
+    fi
+done
+
+
+
+

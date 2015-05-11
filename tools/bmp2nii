@@ -73,6 +73,6 @@ niipath=$(ls -d $srcpath/NIfTI*)
 
 errmsg=$(echo "addpath('$niipath');addpath('$toolpath'); AOI_bmp2nii('$bmpfl', '$onm' $fov $dt); exit;" | matlab -nojvm -nodisplay -nosplash -nodesktop)
 
-fslchfiletype NIFTI_GZ $onm
+# fslchfiletype NIFTI_GZ $onm
 
 
